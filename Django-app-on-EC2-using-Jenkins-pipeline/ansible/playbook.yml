@@ -1,0 +1,65 @@
+---
+- name: Docker and Jenksins installation
+  hosts: all
+  remote_user: ubuntu
+  become: true
+
+  tasks:
+  - name: apt update
+    ansible.builtin.apt:
+      update_cache: yes
+
+  - name: Install Docker and docker-compose
+    ansible.builtin.apt:
+      name:
+      - docker.io
+      - docker-compose
+      state: latest
+
+  - name: Install Openjdk-17-jre
+    ansible.builtin.apt:
+      name: openjdk-17-jre
+      state: latest
+
+  - name: Add Jenkins repository key
+    ansible.builtin.apt_key:
+      url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+      state: present
+
+  - name: Add Jenkins repository
+    ansible.builtin.apt_repository:
+      repo: deb https://pkg.jenkins.io/debian-stable binary/
+      state: present
+      filename: jenkins
+
+  - name: Install Jenkins
+    ansible.builtin.apt:
+      name: jenkins
+      state: latest
+      update_cache: yes
+
+  - name: Assign users to docker group
+    ansible.builtin.user:
+      name: "{{ item }}"
+      groups: docker
+      append: yes
+    loop:
+      - ubuntu
+      - jenkins
+
+  - name: restart services
+    service:
+      name: "{{ item }}"
+      state: restarted
+      enabled: true
+    loop:
+      - docker
+      - jenkins
+
+  - name: Get Jenkins initial admin password
+    command: "cat /var/lib/jenkins/secrets/initialAdminPassword"
+    register: jenkins_password
+
+  - name: Display Jenkins initial admin password
+    ansible.builtin.debug:
+      msg: "Jenkins initial admin password: {{ jenkins_password.stdout }}"
