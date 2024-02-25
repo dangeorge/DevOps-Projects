@@ -1,8 +1,7 @@
 # Django-app-on-EC2-using-Jenkins-pipeline
 Django note app on EC2 using Jenkins pipeline
 
-![image](https://github.com/dangeorge/Django-app-on-EC2-using-Jenkins-pipeline/assets/5060367/817c9a48-5a59-4367-b07b-7a90a64424de)
-
+![image](https://github.com/dangeorge/DevOps-Projects/assets/5060367/7f4166ea-79ba-4d20-b5ea-2b8bc4f55658)
 
 This project involves deploying a Django notes app on an EC2 instance using Jenkins declarative CI/CD pipeline.
 
