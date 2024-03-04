@@ -1,5 +1,5 @@
 ---
-- name: Docker and Jenksins installation
+- name: Docker and Jenkins installation
   hosts: all
   remote_user: ubuntu
   become: true
